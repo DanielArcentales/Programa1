@@ -6,8 +6,10 @@
 package ec.edu.espe.distribuidas.programa1;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
@@ -32,60 +34,73 @@ public class ProgramaGenerador {
 
 
 
-                    try {
-                File fileDir = new File("C:\\Users\\Daniel\\Documents\\nombres.txt");
-                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
-                String linea;
-                while ((linea = in.readLine()) != null) {
-                    //System.out.println(linea);       
-                    nombres.add(linea);
-                }
-                in.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        try {
+            File fileDir = new File("C:\\Users\\DanielCasa\\Documents\\nombres.txt");
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
+            String linea;
+            while ((linea = in.readLine()) != null) {
+                //System.out.println(linea);       
+                nombres.add(linea);
             }
+            in.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
-            try {
-                File fileDir = new File("C:\\Users\\Daniel\\Documents\\apellidos.txt");
-                BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
-                String linea;
-                while ((linea = in.readLine()) != null) {
-                    //System.out.println(linea);
-                    apellidos.add(linea);
-                }
-                in.close();
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        try {
+            File fileDir = new File("C:\\Users\\DanielCasa\\Documents\\apellidos.txt");
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
+            String linea;
+            while ((linea = in.readLine()) != null) {
+                //System.out.println(linea);
+                apellidos.add(linea);
             }
-            
+            in.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
         int numero;
         String fechaNac;
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Ingresar el numero de datos: ");
         String cantidad = br.readLine();
-        
+
         System.out.print("Ingresar cedula incial: ");
         String cedula = br.readLine();
         int cedulaNumerico = Integer.parseInt(cedula);
-    
+
         String aux;
-    
+
+        String ruta = "C:/Users/DanielCasa/Documents/final.txt";
+        File archivo = new File(ruta);
+        BufferedWriter bw;
+        bw = new BufferedWriter(new FileWriter(archivo));
+        
         for (int i = 0; i < Integer.parseInt(cantidad); i++) {
-                aux="";
-                cedulaNumerico++;
+            aux = "";
+            cedulaNumerico++;
 
-                numero = (int) (Math.random() * nombres.size()) + 0;
-                aux += nombres.get(numero);
-                
-                numero = (int) (Math.random() * apellidos.size()) + 0;
-                aux += apellidos.get(numero);
+            aux += cedulaNumerico;
 
-                fechaNac = generarFecha();
-                aux += fechaNac;
-                
-                System.out.println(""+aux);
+            numero = (int) (Math.random() * nombres.size()) + 0;
+            aux += "|" + nombres.get(numero);
+
+            numero = (int) (Math.random() * apellidos.size()) + 0;
+            aux += "|" + apellidos.get(numero);
+
+            fechaNac = generarFecha();
+            aux += "|" + fechaNac;
+
+            System.out.println("" + aux);
+            bw.write(aux);
+            bw.newLine();
         }
+        
+        bw.close();
+       
+        
     }
 
     public static String generarFecha() {
